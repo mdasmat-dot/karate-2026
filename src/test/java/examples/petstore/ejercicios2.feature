@@ -13,7 +13,7 @@ Scenario: CP02 - Actualizar mascota v2
   Given url "https://petstore.swagger.io/v2"
   And path '/pet'
   And request bodyPet
-  When method put
+  When method putgit
   Then status 200
   * print bodyPet"
   And match $.id == bodyPet.id
