@@ -1,0 +1,9 @@
+{
+  "firstname" : "#(firtsname)",
+  "lastname" : "#(lastname)",
+  "totalprice" : "#(totalprice)",
+  "depositpaid" : true,
+  "bookingdates" : {
+    "checkin" : "2018-01-01",
+    "checkout" : "2019-01-01"
+  },

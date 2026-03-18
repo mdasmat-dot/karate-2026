@@ -58,7 +58,7 @@ Feature: Booking
     And path "booking", id
     And header Content-Type = 'application/json'
     And header Accept = 'application/json'
-    And header Cookie = 'token=644ef0759610301'
+    And header Cookie = 'token=ed95559dc19195d'
     And request datosdelbody
     When method put
     Then status 200
