@@ -2,14 +2,14 @@ Feature: Booking
   Scenario: Cp01 - Filter booking by check
     Given url "https://restful-booker.herokuapp.com"
     And path "booking"
-    And params {checkin: 2014-03-13, checkout.2014-05-21}
+    And params {checkin: '2014-03-13', checkout: '2014-05-21'}
     When method get
     Then status 200
 
     Scenario: Cp03 - Ejemplo 2
       Given url "https://restful-booker.herokuapp.com"
       And path "/booking"
-      And params {firstname:sally, lastname=brown}
+      And params {firstname:"sally", lastname= "brown"}
       When method get
       Then status 200
       Scenario Outline: Cp04 - Buscar booking con diferentes parametros
@@ -86,6 +86,28 @@ Feature: Booking
     Then status 200
     And match response.firstname == datosdelbody.firstname
 
-
-
+  Scenario: Cp07 - Update booking  con call
+    * def responseToken = call read('classpath:examples/booking/auth.feature@token')
+    * def tokenAuth = responseToken.token
+    Given url "https://restful-booker.herokuapp.com/"
+    And header Content-Type = 'application/json'
+    And header Accept = 'application/json'
+    And header Cookie = 'token='+tokenAuth
+    And path "/booking/1"
+    And request
+    """
+    {
+  "firstname" : "James",
+  "lastname" : "Brown",
+  "totalprice" : 111,
+  "depositpaid" : true,
+  "bookingdates" : {
+    "checkin" : "2018-01-01",
+    "checkout" : "2019-01-01"
+  },
+  "additionalneeds" : "Breakfast"
+}
+    """
+    When method put
+    Then status 200
 
