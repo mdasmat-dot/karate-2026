@@ -1,14 +1,13 @@
-Feature: CAsos dinamicos
+Feature: Casos dinamicos
   Background:
-    * def responsetoken = call read(classpath:
+    * def responsetoken = call read('classpath:examples/booking/auth.feature@token-parameter') {user: "admin", pass: "password123"}
     * print responsetoken
-    * def authtoken = "token="
+    * def authtoken = "token="+responsetoken.token
     Given url "https://restful-booker.herokuapp.com"
 
-Scenario: CP01 - Partial update booking
+Scenario: CP01 - Partial Update booking
   * def id = 1
-  * def token1 = #token=wweeeeew"
-   And path "booking/" +id
+  And path "booking/"+id
   And headers {Content-Type: "application/json", Accept: "application/json", Cookie: #(token1) }
   And request {"firstname" : "James","lastname" : "Brown"}
   When method patch
@@ -19,25 +18,32 @@ Scenario: CP01 - Partial update booking
     And request
     """
     {
-    "firstname" : <firtsname>,
+    "firstname" : <firstname>,
     "lastname" : <lastname>,
     "totalprice" : <totalprice>,
     "depositpaid" : true,
     "bookingdates" : {
         "checkin" : "2018-01-01",
         "checkout" : "2019-01-01"
-    }
+    },
+    "additionalneeds" : "Breakfast"
+}
     """
-    When method put
-    Then status 2000
-    Example:
-      |read(request.csv)|
+    When method post
+    Then status 200
+    Examples:
+      |read('data.csv')|
 
-  Scenario Outline: CP03 Dianmica csv
+  Scenario Outline: CP02 Dianmica csv
     And path "booking"
     And request read('data-driven.json')
-    When method put
+    When method post
     Then status 418
-  Example:
-  |firstname|lastname|totalprice|
-    |
+
+    Examples:
+    |firstname|lastname|totalprice|depositpaid|
+    |carlos   |zambrano|1234      |true       |
+    |jose     |perez   |2345      |true       |
+    |pepe     |suarez  |3456      |false      |
+
+
